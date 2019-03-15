@@ -11,7 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.developer.antilazy.menus.R;
 
 
 /* This Module uses TextInputEditText, TextInputLayout, and customized spinner to implement
