@@ -1,4 +1,4 @@
-package com.developer.antilazy.menus.dropdown;
+package com.developer.antilazy.dropdown;
 
 import android.content.Context;
 import android.support.design.widget.TextInputEditText;
