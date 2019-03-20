@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,11 +25,13 @@ public class DropdownMenu extends FrameLayout {
     private TextInputLayout mTextInputLayout;
     private CustomSpinner mSpinner;
 
+    private ArrayAdapter<CharSequence> mArrayAdapter;
+
     private CustomSpinner.onDropdownListener mOnDropdownListener;
     private onItemSelectedListener mOnItemSelectedListener;
 
-    private ArrayAdapter mAdapter;
     private Context mContext;
+
 
     public DropdownMenu(Context context) {
         super(context);
@@ -36,12 +39,12 @@ public class DropdownMenu extends FrameLayout {
     }
 
     public DropdownMenu(Context context, AttributeSet attrs) {
-        super(context);
+        super(context,attrs);
         initializeView(context);
     }
 
     public DropdownMenu(Context context, AttributeSet attrs, int defStyle) {
-        super(context);
+        super(context,attrs,defStyle);
         initializeView(context);
     }
 
@@ -62,6 +65,7 @@ public class DropdownMenu extends FrameLayout {
             @Override
             public void onOpened() {
 
+                mTextInputEditText.setFocusableInTouchMode(true);
                 mTextInputEditText.requestFocus();
 
             }
@@ -76,15 +80,32 @@ public class DropdownMenu extends FrameLayout {
 
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.custom_spinner, this);
+        inflater.inflate(R.layout.dropdown_menu,this ,true);
+
+        mTextInputEditText = this.findViewById(R.id.textInputEditForSpinner);
+        mTextInputLayout = this.findViewById(R.id.textInputLayoutForSpinner);
+        mSpinner = this.findViewById(R.id.customSpinner);
+        mSpinner.setOnDropdownListener(mOnDropdownListener);
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                changeLabelState(view);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
     }
 
-    public void setAdapter(int textArrResId, int textViewResId) {
+    public void setAdapter(int resArrayId,int resDropdownId) {
 
-        mAdapter = ArrayAdapter.createFromResource(mContext, textArrResId, textViewResId);
-        mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mSpinner.setAdapter(mAdapter);
+        mArrayAdapter = ArrayAdapter.createFromResource(mContext,resArrayId,R.layout.custom_spinner_item);
+        mArrayAdapter.setDropDownViewResource(resDropdownId);
+
+        mSpinner.setAdapter(mArrayAdapter);
 
     }
 
@@ -120,9 +141,6 @@ public class DropdownMenu extends FrameLayout {
     @Override
     protected void onFinishInflate() {
 
-        mTextInputEditText = findViewById(R.id.textInputEditForSpinner);
-        mTextInputLayout = findViewById(R.id.textInputLayoutForSpinner);
-        mSpinner = findViewById(R.id.spinner);
 
         super.onFinishInflate();
 

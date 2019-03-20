@@ -1,12 +1,21 @@
 package com.developer.antilazy.dropdown;
 
 import android.content.Context;
+import android.util.AttributeSet;
 
-public class CustomSpinner extends android.support.v7.widget.AppCompatSpinner {
 
+class CustomSpinner extends android.support.v7.widget.AppCompatSpinner {
 
     public CustomSpinner(Context context){
         super(context);
+    }
+
+    public CustomSpinner(Context context, AttributeSet attrs) {
+        super(context,attrs);
+    }
+
+    public CustomSpinner(Context context, AttributeSet attrs, int defStyle) {
+        super(context,attrs,defStyle);
     }
 
     private boolean mOpenInitiated = false;
@@ -31,6 +40,7 @@ public class CustomSpinner extends android.support.v7.widget.AppCompatSpinner {
             onDropdownListener.onClosed();
     }
 
+
     @Override
     public boolean performClick() {
 
@@ -44,6 +54,7 @@ public class CustomSpinner extends android.support.v7.widget.AppCompatSpinner {
 
     @Override
     public void onWindowFocusChanged(boolean hasWindowFocus) {
+
 
         if(mOpenInitiated && hasWindowFocus)
             closeEvent();
